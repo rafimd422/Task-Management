@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Form, Grid, Input, Typography, message } from "antd";
 import { signUpStyles } from "../auth.styles";
 import auth from "@/firebase/firebase.config";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import useAuthStore from "@/CustomHook/useAuthStore";
 
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
@@ -14,20 +14,31 @@ interface FormValues {
   password: string;
 }
 
-const SignIn:React.FC = () => {
+const SignIn: React.FC = () => {
+  const { signIn, init, user } = useAuthStore();
 
   const screens = useBreakpoint();
   const styles = signUpStyles(screens);
-
+  console.log(user);
   // It is use for form control
   const onFinish = async ({ email, password }: FormValues) => {
+    if (user !== null) {
+      message.error("Already Logged In");
+      return;
+    }
+
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      message.success("Logged in successfully!");
+      await signIn(auth, email, password);
     } catch (error) {
       message.error("Failed to log in. Kindly check your credentials.");
     }
   };
+
+  useEffect(() => {
+    const unsubscribe = init();
+
+    return () => unsubscribe();
+  }, [init]);
 
   return (
     <section style={styles.section}>
@@ -63,7 +74,7 @@ const SignIn:React.FC = () => {
         <Form
           name="normal_login"
           initialValues={{
-            remember: true
+            remember: true,
           }}
           onFinish={onFinish}
           layout="vertical"
@@ -75,8 +86,8 @@ const SignIn:React.FC = () => {
               {
                 type: "email",
                 required: true,
-                message: "Please input your Email!"
-              }
+                message: "Please input your Email!",
+              },
             ]}
           >
             <Input placeholder="Email" />
@@ -86,14 +97,11 @@ const SignIn:React.FC = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your Password!"
-              }
+                message: "Please input your Password!",
+              },
             ]}
           >
-            <Input.Password
-              type="password"
-              placeholder="Password"
-            />
+            <Input.Password type="password" placeholder="Password" />
           </Form.Item>
           <Form.Item style={{ marginBottom: "0px" }}>
             <Button type="primary" htmlType="submit">
@@ -105,10 +113,9 @@ const SignIn:React.FC = () => {
             </div>
           </Form.Item>
         </Form>
-
       </div>
     </section>
   );
-}
+};
 
 export default SignIn;

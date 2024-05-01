@@ -1,9 +1,8 @@
 "use client";
-import React from "react";
-import { Button, Form, Grid, Input, Typography, message } from "antd";
+import React, { useEffect } from "react";
+import { Button, Form, Grid, Input, Typography } from "antd";
 import { signUpStyles } from "../auth.styles";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import auth from "@/firebase/firebase.config";
+import useAuthStore from "@/CustomHook/useAuthStore";
 
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
@@ -16,28 +15,28 @@ interface FormValues {
 }
 
 const SignUp: React.FC = () => {
+  const { user, createUser, init } = useAuthStore();
+
   const screens = useBreakpoint();
   const styles = signUpStyles(screens);
 
+  console.log(user);
 
   // It is use for form control
-  // Form onFinish handler
   const onFinish = async ({ name, image, email, password }: FormValues) => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      const currentUser = auth.currentUser;
-      if (currentUser) {
-        await updateProfile(currentUser, {
-          displayName: name,
-          photoURL: image,
-        });
-      }
-      console.log(currentUser)
-      message.success("Account Created Successfully!.");
+      await createUser(email, password, name, image);
     } catch (error) {
-      message.error("Failed to create account. Please try again.");
+      // Handle errors if createUser fails
+      console.error("Failed to create user:", error);
     }
   };
+
+  useEffect(() => {
+    const unsubscribe = init();
+
+    return () => unsubscribe();
+  }, [init]);
 
   return (
     <section style={styles.section}>
