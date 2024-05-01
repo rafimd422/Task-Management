@@ -1,8 +1,10 @@
 "use client"
 
 import React from "react";
-import { Button, Form, Grid, Input, Typography } from "antd";
+import { Button, Form, Grid, Input, Typography, message } from "antd";
 import { signUpStyles } from "../auth.styles";
+import auth from "@/firebase/firebase.config";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
@@ -12,18 +14,20 @@ interface FormValues {
   password: string;
 }
 
-const SignUp:React.FC = () => {
+const SignIn:React.FC = () => {
 
   const screens = useBreakpoint();
   const styles = signUpStyles(screens);
 
   // It is use for form control
-  const onFinish = (values: FormValues) => {
-
-    console.log("Received values of form: ", values);
-
+  const onFinish = async ({ email, password }: FormValues) => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      message.success("Logged in successfully!");
+    } catch (error) {
+      message.error("Failed to log in. Kindly check your credentials.");
+    }
   };
-
 
   return (
     <section style={styles.section}>
@@ -81,7 +85,6 @@ const SignUp:React.FC = () => {
             name="password"
             rules={[
               {
-                len:6,
                 required: true,
                 message: "Please input your Password!"
               }
@@ -108,4 +111,4 @@ const SignUp:React.FC = () => {
   );
 }
 
-export default SignUp;
+export default SignIn;

@@ -9,7 +9,7 @@ const { Text, Title, Link } = Typography;
 
 interface FormValues {
   name: string;
-  url: string;
+  image: string;
   email: string;
   password: string;
 }
@@ -20,8 +20,9 @@ const SignUp:React.FC = () => {
   const styles = signUpStyles(screens);
 
   // It is use for form control
-  const onFinish = (values: FormValues) => {
-console.log(values)
+  const onFinish = ({name, image, email, password}: FormValues) => {
+
+    console.log(name, image, email, password)
     message.success("Account Created Successfully");
   };
 
@@ -84,11 +85,12 @@ console.log(values)
           </Form.Item>
 
           <Form.Item
-            name="imageUrl"
+            name="image"
             rules={[
               {
+                type:'url',
                 required: true,
-                message: "Please write your Name!"
+                message: "Please provide your image url!"
               }
             ]}
           >
