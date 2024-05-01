@@ -1,14 +1,13 @@
 "use client"
-import React from "react";
-import { Button, Form, Grid, Input, Typography, message } from "antd";
 
+import React from "react";
+import { Button, Form, Grid, Input, Typography } from "antd";
+import { signUpStyles } from "../auth.styles";
 
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
 
 interface FormValues {
-  name: string;
-  url: string;
   email: string;
   password: string;
 }
@@ -16,47 +15,15 @@ interface FormValues {
 const SignUp:React.FC = () => {
 
   const screens = useBreakpoint();
+  const styles = signUpStyles(screens);
 
   // It is use for form control
   const onFinish = (values: FormValues) => {
-console.log(values)
-    message.success("Account Created Successfully");
+
+    console.log("Received values of form: ", values);
+
   };
 
-  const onFinishFailed = () => {
-    message.error('Failed to create account!');
-  };
-
-  const styles: Record<string, React.CSSProperties> = {
-    container: {
-      margin: "0 auto",
-      padding: screens.md
-        ? "16px"
-        : "24px 16px",
-      width: "380px"
-    },
-    footer: {
-      marginTop: "24px",
-      textAlign: "center",
-      width: "100%"
-    },
-    header: {
-      marginBottom: "24px"
-    },
-    section: {
-      alignItems: "center",
-      backgroundColor: "#fafafa",
-      display: "flex",
-      height:"100vh",
-      padding: screens.md ? "24px 0" : "0"
-    },
-    text: {
-      color: "#595959"
-    },
-    title: {
-      fontSize: screens.md ? "24px" : "20px"
-    }
-  };
 
   return (
     <section style={styles.section}>
@@ -83,45 +50,21 @@ console.log(values)
               fill="white"
             />
           </svg>
-          <Title style={styles.title}>Sign up</Title>
+          <Title style={styles.title}>Sign in</Title>
           <Text style={styles.text}>
             Welcome back to AntBlocks UI! Please enter your details below to
             sign in.
           </Text>
         </div>
         <Form
-          name="Create_Account"
+          name="normal_login"
           initialValues={{
             remember: true
           }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           layout="vertical"
           requiredMark="optional"
         >
-          <Form.Item
-            name="name"
-            rules={[
-              {
-                required: true,
-                message: "Please write your Name!"
-              }
-            ]}
-          >
-            <Input placeholder="Name" />
-          </Form.Item>
-
-          <Form.Item
-            name="imageUrl"
-            rules={[
-              {
-                required: true,
-                message: "Please write your Name!"
-              }
-            ]}
-          >
-            <Input placeholder="Image Url" />
-          </Form.Item>
           <Form.Item
             name="email"
             rules={[
@@ -138,6 +81,7 @@ console.log(values)
             name="password"
             rules={[
               {
+                len:6,
                 required: true,
                 message: "Please input your Password!"
               }
@@ -150,11 +94,11 @@ console.log(values)
           </Form.Item>
           <Form.Item style={{ marginBottom: "0px" }}>
             <Button type="primary" htmlType="submit">
-              Sign Up
+              Log in
             </Button>
             <div style={styles.footer}>
-              <Text style={styles.text}>Already have an account?</Text>{" "}
-              <Link href="/sign-in">Sign in now</Link>
+              <Text style={styles.text}>Don`t have an account?</Text>{" "}
+              <Link href="/auth/sign-up">Sign up now</Link>
             </div>
           </Form.Item>
         </Form>
