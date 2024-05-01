@@ -1,13 +1,14 @@
 "use client"
-
 import React from "react";
-import { Button, Form, Grid, Input, Typography } from "antd";
-import { LockOutlined, MailOutlined } from "@ant-design/icons";
+import { Button, Form, Grid, Input, Typography, message } from "antd";
+
 
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
 
 interface FormValues {
+  name: string;
+  url: string;
   email: string;
   password: string;
 }
@@ -18,9 +19,12 @@ const SignUp:React.FC = () => {
 
   // It is use for form control
   const onFinish = (values: FormValues) => {
+console.log(values)
+    message.success("Account Created Successfully");
+  };
 
-    console.log("Received values of form: ", values);
-
+  const onFinishFailed = () => {
+    message.error('Failed to create account!');
   };
 
   const styles: Record<string, React.CSSProperties> = {
@@ -79,21 +83,45 @@ const SignUp:React.FC = () => {
               fill="white"
             />
           </svg>
-          <Title style={styles.title}>Sign in</Title>
+          <Title style={styles.title}>Sign up</Title>
           <Text style={styles.text}>
             Welcome back to AntBlocks UI! Please enter your details below to
             sign in.
           </Text>
         </div>
         <Form
-          name="normal_login"
+          name="Create_Account"
           initialValues={{
             remember: true
           }}
           onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
           layout="vertical"
           requiredMark="optional"
         >
+          <Form.Item
+            name="name"
+            rules={[
+              {
+                required: true,
+                message: "Please write your Name!"
+              }
+            ]}
+          >
+            <Input placeholder="Name" />
+          </Form.Item>
+
+          <Form.Item
+            name="imageUrl"
+            rules={[
+              {
+                required: true,
+                message: "Please write your Name!"
+              }
+            ]}
+          >
+            <Input placeholder="Image Url" />
+          </Form.Item>
           <Form.Item
             name="email"
             rules={[
@@ -110,7 +138,6 @@ const SignUp:React.FC = () => {
             name="password"
             rules={[
               {
-                len:6,
                 required: true,
                 message: "Please input your Password!"
               }
@@ -123,11 +150,11 @@ const SignUp:React.FC = () => {
           </Form.Item>
           <Form.Item style={{ marginBottom: "0px" }}>
             <Button type="primary" htmlType="submit">
-              Log in
+              Sign Up
             </Button>
             <div style={styles.footer}>
-              <Text style={styles.text}>Don`t have an account?</Text>{" "}
-              <Link href="/sign-up">Sign up now</Link>
+              <Text style={styles.text}>Already have an account?</Text>{" "}
+              <Link href="/sign-in">Sign in now</Link>
             </div>
           </Form.Item>
         </Form>
