@@ -1,8 +1,9 @@
-"use client"
+"use client";
 import React from "react";
 import { Button, Form, Grid, Input, Typography, message } from "antd";
 import { signUpStyles } from "../auth.styles";
-
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import auth from "@/firebase/firebase.config";
 
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
@@ -14,22 +15,29 @@ interface FormValues {
   password: string;
 }
 
-const SignUp:React.FC = () => {
-
+const SignUp: React.FC = () => {
   const screens = useBreakpoint();
   const styles = signUpStyles(screens);
 
+
   // It is use for form control
-  const onFinish = ({name, image, email, password}: FormValues) => {
-
-    console.log(name, image, email, password)
-    message.success("Account Created Successfully");
+  // Form onFinish handler
+  const onFinish = async ({ name, image, email, password }: FormValues) => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        await updateProfile(currentUser, {
+          displayName: name,
+          photoURL: image,
+        });
+      }
+      console.log(currentUser)
+      message.success("Account Created Successfully!.");
+    } catch (error) {
+      message.error("Failed to create account. Please try again.");
+    }
   };
-
-  const onFinishFailed = () => {
-    message.error('Failed to create account!');
-  };
-
 
   return (
     <section style={styles.section}>
@@ -65,10 +73,9 @@ const SignUp:React.FC = () => {
         <Form
           name="Create_Account"
           initialValues={{
-            remember: true
+            remember: true,
           }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           layout="vertical"
           requiredMark="optional"
         >
@@ -77,8 +84,8 @@ const SignUp:React.FC = () => {
             rules={[
               {
                 required: true,
-                message: "Please write your Name!"
-              }
+                message: "Please write your Name!",
+              },
             ]}
           >
             <Input placeholder="Name" />
@@ -88,10 +95,10 @@ const SignUp:React.FC = () => {
             name="image"
             rules={[
               {
-                type:'url',
+                type: "url",
                 required: true,
-                message: "Please provide your image url!"
-              }
+                message: "Please provide your image url!",
+              },
             ]}
           >
             <Input placeholder="Image Url" />
@@ -102,8 +109,8 @@ const SignUp:React.FC = () => {
               {
                 type: "email",
                 required: true,
-                message: "Please input your Email!"
-              }
+                message: "Please input your Email!",
+              },
             ]}
           >
             <Input placeholder="Email" />
@@ -113,14 +120,11 @@ const SignUp:React.FC = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your Password!"
-              }
+                message: "Please input your Password!",
+              },
             ]}
           >
-            <Input.Password
-              type="password"
-              placeholder="Password"
-            />
+            <Input.Password type="password" placeholder="Password" />
           </Form.Item>
           <Form.Item style={{ marginBottom: "0px" }}>
             <Button type="primary" htmlType="submit">
@@ -132,10 +136,9 @@ const SignUp:React.FC = () => {
             </div>
           </Form.Item>
         </Form>
-
       </div>
     </section>
   );
-}
+};
 
 export default SignUp;
