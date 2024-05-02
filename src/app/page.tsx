@@ -1,6 +1,13 @@
-import { DatePicker } from "antd";
-import Image from "next/image";
+import Header from "@/components/Header";
+import React from "react";
 
-export default function Home() {
-  return <DatePicker />
-}
+const Home: React.FC = () => {
+
+  return (
+    <div>
+      <Header />
+    </div>
+  );
+};
+
+export default Home;

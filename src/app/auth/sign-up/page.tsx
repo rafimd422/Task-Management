@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { Button, Form, Grid, Input, Typography } from "antd";
 import { signUpStyles } from "../auth.styles";
 import useAuthStore from "@/CustomHook/useAuthStore";
+import { useRouter } from "next/navigation";
 
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
@@ -21,7 +22,11 @@ const SignUp: React.FC = () => {
   const styles = signUpStyles(screens);
 
   console.log(user);
-
+  const router = useRouter()
+  if(user !== null){
+    router.push('/')
+  }
+  
   // It is use for form control
   const onFinish = async ({ name, image, email, password }: FormValues) => {
     try {

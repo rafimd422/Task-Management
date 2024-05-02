@@ -1,17 +1,14 @@
 import create from 'zustand';
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, Auth, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
 import auth from '@/firebase/firebase.config';
 import Swal from 'sweetalert2';
 import { message } from 'antd';
 import { Unsubscribe } from '@firebase/util';
 
-interface User {
-
-}
 
 interface AuthStore {
     loading: boolean;
-    user: null | User;
+    user: null | any;
     logOut: () => void;
     createUser: (email: string, password: string, name: string, imageUrl: string) => void;
     init: () => () => void;
@@ -23,14 +20,14 @@ const useAuthStore = create<AuthStore>((set) => ({
     createUser: async (email, password, name, imageUrl) => {
         set({ loading: true });
         try {
-            // Create user with email and password
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-            // Update user profile with name and imageUrl
-            await updateProfile(auth.currentUser, {
-                displayName: name,
-                photoURL: imageUrl,
-            });
+            if (auth.currentUser) {
+                await updateProfile(auth.currentUser, {
+                    displayName: name,
+                    photoURL: imageUrl,
+                });
+            }
             message.success('Account Created Successfully!');
             return userCredential;
         } catch (error) {

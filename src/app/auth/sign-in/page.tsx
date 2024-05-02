@@ -5,6 +5,7 @@ import { Button, Form, Grid, Input, Typography, message } from "antd";
 import { signUpStyles } from "../auth.styles";
 import auth from "@/firebase/firebase.config";
 import useAuthStore from "@/CustomHook/useAuthStore";
+import { useRouter } from "next/navigation";
 
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
@@ -16,10 +17,16 @@ interface FormValues {
 
 const SignIn: React.FC = () => {
   const { signIn, init, user } = useAuthStore();
-
   const screens = useBreakpoint();
   const styles = signUpStyles(screens);
   console.log(user);
+  const router = useRouter()
+
+  if(user !== null){
+    router.push('/')
+    console.log(router);
+  }
+
   // It is use for form control
   const onFinish = async ({ email, password }: FormValues) => {
     if (user !== null) {
