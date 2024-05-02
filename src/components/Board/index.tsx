@@ -1,7 +1,7 @@
-import React from "react";
 import axios from "axios";
 import { useQuery } from "react-query";
 import Task from "./Task";
+import { PlusOutlined } from "@ant-design/icons";
 
 interface TaskProps {
   title: string;
@@ -15,8 +15,11 @@ const Board: React.FC = () => {
     return response.data;
   });
 
+
+  
+
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="h-[80vh] w-screen flex items-center justify-center">Loading...</div>;
   }
 
   return (
@@ -34,8 +37,18 @@ const Board: React.FC = () => {
               <Task task={task} />
             </div>
           ))}
+
+          <div 
+            className="flex cursor-pointer items-center justify-center gap-1 py-[10px] md:w-[80%] w-full opacity-90 bg-white rounded-lg shadow-lg text-[#555] font-medium text-[15px] mt-2 ms-3"
+           
+          >
+            <PlusOutlined color={"#555"} />
+            Add Task
+          </div>
         </div>
       ))}
+      
+  
     </div>
   );
 };

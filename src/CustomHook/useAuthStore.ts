@@ -19,6 +19,11 @@ const useAuthStore = create<AuthStore>((set) => ({
     user: null,
     createUser: async (email, password, name, imageUrl) => {
         set({ loading: true });
+
+        if(password.length < 6){
+            message.error("password much contain 6 minimum character")
+        return;
+            }
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
@@ -42,6 +47,7 @@ const useAuthStore = create<AuthStore>((set) => ({
             message.success('Logged In Successfully!');
             return userCredential;
         } catch (error) {
+            message.error("Login Failed!");
             console.error('Error signing in:', error);
         } finally {
             set({ loading: false });

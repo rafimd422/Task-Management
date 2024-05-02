@@ -10,7 +10,7 @@ interface TaskProps {
 
 const Task: React.FC<TaskProps> = ({ task }) => {
   return (
-    <div className="w-full cursor-grab bg-[#fff] flex flex-col justify-between gap-3 items-start shadow-lg rounded-xl px-3 py-4 m-2">
+    <div className="w-full cursor-grab bg-[#fff] flex flex-col justify-between gap-4 items-start shadow-lg rounded-xl px-3 py-4 m-2">
       <div className="w-full flex items-start flex-col gap-0">
         <span className="text-[15.5px] font-medium text-[#555]">
           {task.title}
