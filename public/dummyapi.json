@@ -1,0 +1,41 @@
+[
+  {
+    "name": "To Do",
+    "items": [
+      {
+        "id": "5",
+        "title": "Admin Panel Front-end",
+        "description": "Lorem ipsum dolor sit amet ..",
+        "deadline": 50
+      }
+    ]
+  },
+  {
+    "name": "In Progress",
+    "items": [
+      {
+        "id": "6",
+        "title": "Admin Panel Front-end",
+        "description": "Lorem ipsum dolor sit amet ..",
+        "deadline": 50
+      },
+      {
+        "id": "7",
+        "title": "Admin Panel Back-end",
+        "description": "Lorem ipsum dolor sit amet ..",
+        "deadline": 50
+      }
+    ]
+  },
+  {
+    "name": "Done",
+    "items": [
+      {
+        "id": "8",
+        "title": "Admin Panel Front-end",
+        "description": "Lorem ipsum dolor sit amet ..",
+        "deadline": 50
+      }
+    ]
+  }
+]

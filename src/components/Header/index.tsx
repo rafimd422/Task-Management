@@ -6,7 +6,7 @@ import HeaderAvatar from "./HeaderAvatar";
 const Header: React.FC = () => {
 
   return (
-    <header className="h-20 flex justify-between items-center md:mx-6 sm:mx-2 mx-1">
+    <header className="lg:container h-20 flex justify-between items-center md:mx-auto sm:mx-2 mx-1">
       <Image
         src={logo}
         alt="logo"
