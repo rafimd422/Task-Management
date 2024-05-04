@@ -28,16 +28,26 @@ const Board: React.FC = () => {
     setShowModal(!showModal);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
 
-  const handleAddTask = () => {
-    setTasks([...tasks, { ...formData }]);
+  const handleAddTask = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  
+    const title = e.target.title.value;
+    const description = e.target.description.value;
+    const deadline = e.target.deadline.value;
+    console.log(title)
+   
+  console.log({ title, description, deadline })
+  
+  
+    setTasks([...tasks, { title, description, deadline }]);
+    console.log(tasks)
+
     setFormData({ title: "", description: "", deadline: 0 });
     setShowModal(false);
   };
+  
+  
 
   if (isLoading) {
     return <div className="h-[80vh] w-screen flex items-center justify-center">Loading...</div>;
@@ -83,8 +93,6 @@ const Board: React.FC = () => {
                             type="text"
                             placeholder="Enter task title"
                             name="title"
-                            value={formData.title}
-                            onChange={handleInputChange}
                           />
                         </div>
                         <div className="mb-4">
@@ -94,8 +102,6 @@ const Board: React.FC = () => {
                             id="description"
                             placeholder="Enter task description"
                             name="description"
-                            value={formData.description}
-                            onChange={handleInputChange}
                           ></textarea>
                         </div>
                         <div className="mb-4">
@@ -105,8 +111,6 @@ const Board: React.FC = () => {
                             id="deadline"
                             type="number"
                             name="deadline"
-                            value={formData.deadline}
-                            onChange={handleInputChange}
                           />
                         </div>
                         <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
